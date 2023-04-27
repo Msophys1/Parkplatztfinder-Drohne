@@ -1,0 +1,27 @@
+<annotation>
+	<folder></folder>
+	<filename>JDFBGKERBG_png_jpg.rf.808bc859ec203a43d6609c1fdfce2eff.jpg</filename>
+	<path>JDFBGKERBG_png_jpg.rf.808bc859ec203a43d6609c1fdfce2eff.jpg</path>
+	<source>
+		<database>roboflow.ai</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>640</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>girafe</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<occluded>0</occluded>
+		<bndbox>
+			<xmin>88</xmin>
+			<xmax>561</xmax>
+			<ymin>1</ymin>
+			<ymax>641</ymax>
+		</bndbox>
+	</object>
+</annotation>

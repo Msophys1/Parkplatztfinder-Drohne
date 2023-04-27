@@ -1,0 +1,27 @@
+<annotation>
+	<folder></folder>
+	<filename>zjhsrgvflzesirfjlvbckesjdhrgvdkceijghfvclzef_png_jpg.rf.cdeb2d4d913be5cdb07a866a8244426a.jpg</filename>
+	<path>zjhsrgvflzesirfjlvbckesjdhrgvdkceijghfvclzef_png_jpg.rf.cdeb2d4d913be5cdb07a866a8244426a.jpg</path>
+	<source>
+		<database>roboflow.ai</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>640</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>girafe</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<occluded>0</occluded>
+		<bndbox>
+			<xmin>5</xmin>
+			<xmax>563</xmax>
+			<ymin>9</ymin>
+			<ymax>553</ymax>
+		</bndbox>
+	</object>
+</annotation>
