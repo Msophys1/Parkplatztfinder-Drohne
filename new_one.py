@@ -16,7 +16,7 @@ test_images_tfrecord_dir = 'Data1/test'
 num_classes = 10
 
 
-# Load the labels from the pbtxt file
+# Load the labels from the pbtxt pbtxt_file
 def get_labels_from_pbtxt(pbtxt_file):
     labels = {}
     with open(pbtxt_file, 'r') as f:
