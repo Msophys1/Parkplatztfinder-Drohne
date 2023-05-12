@@ -4,7 +4,7 @@
 ### Grundidee 
 Bei der immer weiter steigenden Zahl an Autos wird die Parkplatzsuche immer schwierger und zeitaufwändiger. Vor allem bei grossen PArkfelder kann es vorkommen, dass man mit dem Auto minutenlang hin und herfährt, ohne eine freie Lücke zu finden. Die Folgen davon können sowohl wiederholtes Zu-Spät-Kommen zum Unterricht oder zu Arbeit wie auch Wut und Verzeiflung erfolglosen Autofahrer sein. 
 
-Au diesem Grund ist die Idee des Projekts, ein Drohne zu konzipieren und zu entwickeln, die den Autofahrer in der Parkplatzsuche unterstützen soll. 
+Aus diesem Grund ist die Idee des Projekts, ein Drohne zu konzipieren und zu entwickeln, die den Autofahrer in der Parkplatzsuche unterstützen soll. 
 
 ### Funktionsweise
 
@@ -13,7 +13,14 @@ Eine Drohne soll hochfliegen und ein Bield der Umgebung machen. Weiter muss dies
 ## GitHub Inhalte 
 
 ### Flight control
-lara
+Mattéo
+
+### Benutzerinterface
+Mit Hilfe des kivy packages wird ein Panel geöffnet und der Benutzer erhält Anweisungen. Nach dem Drücken des Startknopfs wird das Panel upgedatet und weitere Anweisungen werden angezeigt.
+
+### USB-Kamera
+Die USB-Kamera wird mit eingelesen und das Bild wird aktualisiert und so ausgegeben. Die Kamera läuft selbstständig neben dem Hauptprogramm.
+
 
 #### Flight 
 
