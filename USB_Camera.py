@@ -26,14 +26,14 @@ def main():
         cv2.imshow("USB Camera", frame)
 
         #Bild abspeichern von Drohne
-        cv2.imwrite(f'Images/{time.time()}', frame)
+        #cv2.imwrite(f'Images/{time.time()}.png', frame)
 
         # Exit the loop if 'q' key is pressed
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
         #Für Bilder machen
-        sleep(1)
+        #sleep(1)
 
     # Release the camera and close all OpenCV windows
     cap.release()
