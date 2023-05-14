@@ -19,26 +19,27 @@ for index, row in data.iterrows():
     # Load the image from the corresponding folder
     img = Image.open(os.path.join('data', row['filename']))
     # Resize the image to 224 x 224
-    img = img.resize((224, 224))
+    image = img.resize((224, 224))
     # Get the dimensions of the image
-    img_width, img_height = img.size
+    img_width, img_height = image.size
     # Normalize the pixel values of the image
-    img = np.array(img) / 255.
+    nm_image = np.array(image) / 255.
     # Subtract the mean and divide by the standard deviation of the pixels
-    img = (img - np.mean(img)) / np.std(img)
+    dev_image = (nm_image - np.mean(nm_image)) / np.std(nm_image)
     # Extract bounding box coordinates and normalize them
     xmin = row['xmin'] / img_width
     ymin = row['ymin'] / img_height
     xmax = row['xmax'] / img_width
     ymax = row['ymax'] / img_height
     # Add bounding box coordinates and class label to the list as a tuple
-    data_list.append((img, (xmin, ymin, xmax, ymax)))
+    data_list.append((dev_image, (xmin, ymin, xmax, ymax)))
 
 # Convert list of tuples to numpy array
 data_array = np.array(data_list, dtype=object)
 
 # Split the data into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(data_array[:, 0], class_labels, test_size=0.2, random_state=42, shuffle=True)
+X_train, X_test, y_train, y_test = train_test_split(data_array[:, 0], class_labels, test_size=0.2, random_state=42,
+                                                    shuffle=True)
 
 # Convert class labels to numpy arrays
 y_train = np.array(y_train, dtype=float)
@@ -54,26 +55,35 @@ y_train_tensor = tf.convert_to_tensor(y_train_tensor, dtype=tf.float32)
 X_test_tensor = tf.convert_to_tensor(X_test_tensor, dtype=tf.float32)
 y_test_tensor = tf.convert_to_tensor(y_test_tensor, dtype=tf.float32)
 
-# Load the pre-trained MobileNetV2 model
-base_model = tf.keras.applications.MobileNetV2(input_shape=(224,224,3), include_top=False, weights='imagenet')
 
-# Freeze all layers of the pre-trained model
-for layer in base_model.layers:
-    layer.trainable = False
+def get_model():
+    # Load the pre-trained MobileNetV2 model
+    base_model = tf.keras.applications.MobileNetV2(input_shape=(224, 224, 3), include_top=False, weights='imagenet')
 
-# Add custom classification layers
-x = base_model.output
-x = tf.keras.layers.GlobalAveragePooling2D()(x)
-x = tf.keras.layers.Dense(128, activation='relu')(x)
-predictions = tf.keras.layers.Dense(5, activation='sigmoid')(x)
+    # Freeze all layers of the pre-trained model
+    for layer in base_model.layers:
+        layer.trainable = False
 
-# Compile the model with binary cross-entropy loss and Adam optimizer
-model = tf.keras.models.Model(inputs=base_model.input, outputs=predictions)
-model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+    # Add custom classification layers
+    x = base_model.output
+    x = tf.keras.layers.GlobalAveragePooling2D()(x)
+    x = tf.keras.layers.Dense(128, activation='relu')(x)
+    predictions = tf.keras.layers.Dense(5, activation='sigmoid')(x)
+
+    # Compile the model with binary cross-entropy loss and Adam optimizer
+    model = tf.keras.models.Model(inputs=base_model.input, outputs=predictions)
+    model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+
+    return model
+
+
+model = get_model()
 
 # Define EarlyStopping callback
 early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
 
-history = model.fit(X_train_tensor, y_train_tensor, epochs=20,
-                    validation_data=(X_test_tensor, y_test_tensor),
-                    callbacks=[early_stopping])
+model.fit(X_train_tensor, y_train_tensor, epochs=20, validation_data=(X_test_tensor, y_test_tensor),
+          callbacks=[early_stopping])
+
+# Save the model in SavedModel format
+model.save('my_model.h5', include_optimizer=True)

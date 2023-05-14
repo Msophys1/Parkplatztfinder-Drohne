@@ -1,5 +1,7 @@
 import cv2
 import numpy as np
+from PIL import Image
+from keras import models
 from djitellopy import Tello
 import time
 
@@ -8,7 +10,7 @@ pid = [0.4, 0.4, 0]
 # Define table for the update of the previous error [L/R, F/B, U/D, y]
 pError = [0, 0, 0, 0]
 # Define frame size
-wTot, hTot = [360, 240]
+wTot, hTot = [224, 224]
 # Define reference area for the object
 refArea = 10000
 
@@ -32,33 +34,49 @@ time.sleep(2.2)
 # opencv to recognize the platform. It then returns the coordinates of the detected platform
 def findLanding(video, w, h):
     # load trained model
-    landing_model = cv2.CascadeClassifier("model.xml")
+    model = models.load_model('my_model.h5')
     # convert the frame to grayscale
-    img_gray = cv2.cvtColor(video, cv2.COLOR_BGR2GRAY)
+    im = Image.fromarray(video, 'RGB')
+    im = im.resize((224, 224))
+    img_array = np.array(im)
+    img_array = np.expand_dims(img_array, axis=0)
+
     # start image recognition
-    platform = landing_model.detectMultiScale(img_gray, 1.2, 8)
+    platform = model.predict(img_array)
 
     # define the table of value
     center_platform = []
     area_platform = []
+    probabilities = []
 
-    for (x, y, w, h) in platform:
+    for (x, y, pw, ph) in platform:
+        # extract the probability of the detected object being the platform
+        _, prob = platform.predict_proba(img_array[y:y + ph, x:x + pw])
+        probabilities.append(prob[0])
         # draw a rectangle around the detected object
-        cv2.rectangle(video, (x, y), (x + w, y + h), (0, 0, 255), 2)
+        cv2.rectangle(video, (x, y), (x + pw, y + ph), (0, 0, 255), 2)
         # calculate the center coordinate and the area of the rectangle
-        cx = x + w // 2
-        cy = y + h // 2
-        area = w * h
+        cx = x + pw // 2
+        cy = y + ph // 2
+        area = pw * ph
         # Implement the coordinates in the tables
         center_platform.append([cx, cy])
         area_platform.append(area)
         # mark the center with a green circle
         cv2.circle(video, (cx, cy), 5, (0, 255, 0), cv2.FILLED)
-        # return the frame with the marked detected object
-    if len(area_platform) != 0:
-        i = area_platform.index(max(area_platform))
-        return video, [center_platform[i], [w, h], area_platform[i]]
-        # if nothing is recognised return 0
+
+    # sort the detected objects based on their probabilities
+    sorted_platform = [x for _, x in sorted(zip(probabilities, platform), reverse=True)]
+
+    # return the frame with the marked detected object with the highest probability
+    if len(sorted_platform) != 0:
+        spx, spy, spw, sph = sorted_platform[0]
+        # calculate the center coordinate and the area of the rectangle
+        spcx = spx + spw // 2
+        spcy = spy + sph // 2
+        sparea = spw * sph
+        return video, [[spcx, spcy], [spw, sph], sparea]
+    # if nothing is recognized return 0
     else:
         return video, [[0, 0], [w, h], 0]
 
