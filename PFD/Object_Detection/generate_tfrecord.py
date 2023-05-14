@@ -31,10 +31,10 @@ Make sure to edit this method to match the labels you made with labelImg!
 *************************************************************************
 '''
 def class_text_to_int(row_label):
-    if row_label == 'car':
+    if row_label == 'free':
         return 1
-    elif row_label == 'free_space':
-        return 2
+    # elif row_label == 'free_space':
+    #     return 2
     else:
         return None
 

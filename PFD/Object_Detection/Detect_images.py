@@ -98,7 +98,7 @@ def run_inference(model, category_index, image_path):
                 Use plt.savefig() to save the results instead and view them in a folder"""
             plt.imshow(image_np)
             # plt.show()
-            plt.savefig("outputs/detection_output{}.png".format(i))  # make sure to make an outputs folder
+            plt.savefig("C:/Users/widde/Desktop/PFD/Object_Detection/outputs/detection_output{}.png".format(i))  # make sure to make an outputs folder
             i = i + 1
     # else:
     #     image_np = load_image_into_numpy_array(image_path)
