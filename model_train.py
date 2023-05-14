@@ -68,7 +68,7 @@ def get_model():
     x = base_model.output
     x = tf.keras.layers.GlobalAveragePooling2D()(x)
     x = tf.keras.layers.Dense(128, activation='relu')(x)
-    predictions = tf.keras.layers.Dense(5, activation='sigmoid')(x)
+    predictions = tf.keras.layers.Dense(2, activation='sigmoid')(x)
 
     # Compile the model with binary cross-entropy loss and Adam optimizer
     model = tf.keras.models.Model(inputs=base_model.input, outputs=predictions)
@@ -82,7 +82,7 @@ model = get_model()
 # Define EarlyStopping callback
 early_stopping = tf.keras.callbacks.EarlyStopping(monitor='val_loss', patience=3)
 
-model.fit(X_train_tensor, y_train_tensor, epochs=20, validation_data=(X_test_tensor, y_test_tensor),
+model.fit(X_train_tensor, y_train_tensor, epochs=50, validation_data=(X_test_tensor, y_test_tensor),
           callbacks=[early_stopping])
 
 # Save the model in SavedModel format

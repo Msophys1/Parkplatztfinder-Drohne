@@ -1,8 +1,8 @@
 
-drone logo detection - v3 2023-04-07 1:21pm
+platform detection - v2 2023-05-14 7:14pm
 ==============================
 
-This dataset was exported via roboflow.com on April 7, 2023 at 11:21 AM GMT
+This dataset was exported via roboflow.com on May 14, 2023 at 5:14 PM GMT
 
 Roboflow is an end-to-end computer vision platform that helps you
 * collaborate with your team on computer vision projects
@@ -17,19 +17,15 @@ visit https://github.com/roboflow/notebooks
 
 To find over 100k other datasets and pre-trained models, visit https://universe.roboflow.com
 
-The dataset includes 615 images.
-Drones are annotated in Tensorflow Object Detection format.
+The dataset includes 444 images.
+Platform are annotated in Tensorflow Object Detection format.
 
 The following pre-processing was applied to each image:
-* Auto-orientation of pixel data (with EXIF-orientation stripping)
-* Resize to 640x640 (Stretch)
-* Grayscale (CRT phosphor)
+* Resize to 224x224 (Stretch)
 
 The following augmentation was applied to create 3 versions of each source image:
-* Random exposure adjustment of between -16 and +16 percent
-* Random Gaussian blur of between 0 and 3.75 pixels
-
-The following transformations were applied to the bounding boxes of each image:
-* Salt and pepper noise was applied to 3 percent of pixels
+* Random shear of between -8° to +8° horizontally and -8° to +8° vertically
+* Random brigthness adjustment of between -20 and +20 percent
+* Random exposure adjustment of between -9 and +9 percent
 
 
